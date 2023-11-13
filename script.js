@@ -1,23 +1,25 @@
-const width = 920;
-const height = 600;
-const padding = 45;
-const xOffset = 30;
-
 function createDate(time) {
   const splitTime = time.split(':')
   return new Date(0, 0, 0, 0, splitTime[0], splitTime[1])
 }
 
-fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
-  .then(response => response.json())
+d3.json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
   .then(dataset => {
+    const width = 920;
+    const height = 600;
+    const padding = 45;
+    const xOffset = 30;
+    const violet300 = '#c4b5fd';
+
     const time = dataset.map(item => createDate(item.Time))
 
     time.unshift(new Date(0, 0, 0, 0, time[0].getMinutes(), time[0].getSeconds() - 30))
     time.push(new Date(0, 0, 0, 0, time[time.length - 1].getMinutes(), time[time.length - 1].getSeconds() + 30))
 
+    const years = dataset.map(item => item.Year)
+
     const xScale = d3.scaleLinear()
-      .domain([d3.min(dataset, d => d.Year) - 1, d3.max(dataset, d => d.Year) + 1])
+      .domain([d3.min(years) - 1, d3.max(years) + 1])
       .range([padding, width - padding])
 
     const yScale = d3.scaleTime()
@@ -29,8 +31,6 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
 
     const yAxis = d3.axisLeft(yScale)
       .tickFormat(d3.timeFormat('%M:%S'))
-
-    const legendTexts = ['No doping allegations', 'Riders with doping allegations']
 
     // Title
     d3.select('main')
@@ -53,7 +53,7 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
       .attr('id', 'tooltip')
       .style('visibility', 'hidden')
       .style('position', 'absolute')
-      .style('background-color', '#c4b5fd')
+      .style('background-color', violet300)
       .style('padding', '10px')
       .style('font-size', '1.2rem')
       .style('font-family', 'sans-serif')
@@ -87,6 +87,11 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
       .call(yAxis)
 
     // Legend
+    const legendTexts = [
+      'No doping allegations',
+      'Riders with doping allegations'
+    ]
+
     const legend = svg.append('g')
       .attr('id', 'legend')
 
@@ -121,7 +126,7 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
       .attr('data-yvalue', d => createDate(d.Time).toISOString())
       .attr('cx', d => xScale(d.Year) + xOffset)
       .attr('cy', d => yScale(createDate(d.Time)))
-      .attr('r', 6)      
+      .attr('r', 6)
       .style('fill', d => d.Doping ? d3.schemeSet1[1] : d3.schemeSet1[0])
       .style('stroke', 'black')
       .style('stroke-width', '1px')
@@ -139,5 +144,4 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
       .on('mouseout', () => {
         tooltip.style('visibility', 'hidden')
       })
-  })
-  .catch(error => console.error(error))
+  }).catch(error => console.error(error))

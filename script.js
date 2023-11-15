@@ -34,30 +34,19 @@ d3.json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/mas
 
     // Title
     d3.select('main')
-      .append('text')
+      .append('h1')
       .text('Doping in Professional Bicycle Racing')
       .attr('id', 'title')
       .style('font-size', '3rem')
       .style('font-family', 'sans-serif')
+      .style('font-weight', 400)
 
     // Subtitle
     d3.select('main')
-      .append('text')
+      .append('p')
       .text("35 Fastest times up Alpe d'Huez")
       .style('font-size', '2rem')
       .style('font-family', 'sans-serif')
-
-    // Tooltip
-    const tooltip = d3.select('main')
-      .append('div')
-      .attr('id', 'tooltip')
-      .style('visibility', 'hidden')
-      .style('position', 'absolute')
-      .style('background-color', violet300)
-      .style('padding', '10px')
-      .style('font-size', '1.2rem')
-      .style('font-family', 'sans-serif')
-      .style('border-radius', '8px')
 
     // Main SVG
     const svg = d3.select('main')
@@ -116,7 +105,19 @@ d3.json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/mas
       .style('height', 18)
       .style('fill', (d, i) => d3.schemeSet1[i])
 
-    // Circles
+    // Tooltip
+    const tooltip = d3.select('main')
+      .append('div')
+      .attr('id', 'tooltip')
+      .style('visibility', 'hidden')
+      .style('position', 'absolute')
+      .style('background-color', violet300)
+      .style('padding', '10px')
+      .style('font-size', '1.2rem')
+      .style('font-family', 'sans-serif')
+      .style('border-radius', '8px')
+
+    // Dot
     svg.selectAll('.dot')
       .data(dataset)
       .enter()

@@ -9,7 +9,7 @@ d3.json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/mas
     const height = 600;
     const padding = 45;
     const xOffset = 30;
-    const violet300 = '#c4b5fd';
+    const purple = d3.schemePurples[9][3];
 
     const time = dataset.map(item => createDate(item.Time))
 
@@ -90,15 +90,13 @@ d3.json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/mas
       .append('g')
       .attr('transform', (d, i) => `translate(${width - 50}, ${height / 2 + i * 22 - 20})`)
 
-    legendLabels
-      .append('text')
+    legendLabels.append('text')
       .text(d => d)
       .style('font-size', '1rem')
       .style('font-family', 'sans-serif')
       .style('text-anchor', 'end')
 
-    legendLabels
-      .append('rect')
+    legendLabels.append('rect')
       .attr('x', 10)
       .attr('y', -13)
       .style('width', 18)
@@ -111,7 +109,7 @@ d3.json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/mas
       .attr('id', 'tooltip')
       .style('visibility', 'hidden')
       .style('position', 'absolute')
-      .style('background-color', violet300)
+      .style('background-color', purple)
       .style('padding', '10px')
       .style('font-size', '1.2rem')
       .style('font-family', 'sans-serif')
